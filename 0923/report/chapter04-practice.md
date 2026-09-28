@@ -12,11 +12,11 @@
     <title>태그 셀렉터 만들기</title>
   </head>
   <body>
-    <h3>소문제</h3>
+    <h3>소연제</h3>
     <hr />
     <p>
-      자는 제조 선수 소현정입니다. <span>급</span>을 들으면서 취업기를
-      종이입니다. <span>김자 제계</span>와 <span>막궁수 </span> 우적 종입니다.
+      저는 체조 선수 소연재입니다. <span>음악</span>을 들으면서 책읽기를
+      좋아합니다. <span>김치 찌개</span>와 <span>막국수 </span> 무척 좋아합니다.
     </p>
   </body>
 </html>
@@ -49,14 +49,14 @@ span {
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>텍스트 구미기</title>
+    <title>텍스트 꾸미기</title>
   </head>
   <body>
     <h3>테스트와 폰트</h3>
     <hr />
     <p>
-      AliceBlue 바탕에 Brown 색의 "Lucida Console" 폰트로 10px 크기로
-      <span>자는 이것 1.5배 됨</span>
+      AliceBlue 바탕색에 Brown 색의 "Lucida Console" 폰트로 10px 크기이고
+      <span>저는 이보다 1.5배 큽니다.</span>
     </p>
   </body>
 </html>
@@ -103,7 +103,7 @@ span {
 
 ---
 
-## 4. HTML 태그를 수정하여 말고 셀렉터의 스타일을 적용하라.
+## 4. HTML 태그를 수정하여 말고 셀렉터와 스타일 시트를 삽입하여 다음과 같이 출력되게 하라.
 
 ```html
 <!DOCTYPE html>
@@ -113,10 +113,10 @@ span {
     <title>셀렉터 만들기</title>
   </head>
   <body class="main">
-    <h3 class="headline">셀렉터 만들기</h3>
+    <h3 class="headline">클래스 셀렉터</h3>
     <hr />
     <div class="hlp">도움말</div>
-    <p class="help">!!긴급 메시지!!</p>
+    <p class="help">!!경고 메시지!!</p>
     <p id="hot">도움을 댓글!</p>
   </body>
 </html>
@@ -148,7 +148,7 @@ span {
 
 ---
 
-## 5. HTML 태그를 수정하여 말고 셀렉터와 스타일 시트를 사용하여 다음과 같이 출력되게 하라.
+## 5. HTML 태그를 수정하여 말고 셀렉터와 스타일 시트를 삽입하여 다음과 같이 출력되게 하라.
 
 ```html
 <!DOCTYPE html>
@@ -158,13 +158,13 @@ span {
     <title>셀렉터</title>
   </head>
   <body class="main">
-    <h3>얍글</h3>
+    <h3>얼굴</h3>
     <hr />
-    <div id="center"><strong>비밀정</strong></div>
+    <div id="center"><strong>박인희</strong></div>
     <div class="indent">
-      <p><em>깎</em>을 신고 무옇하리</p>
-      <p><strong>깎</strong>이 내가 아니돈 내가</p>
-      <p><strong>깎</strong>이 알 수 없는 지금...</p>
+      <p><em>길</em>을 걷고 산들 무엇하리</p>
+      <p><strong>꽃</strong>이 내가 아니듯 내가</p>
+      <p><strong>꽃</strong>이 될 수 없는 지금...</p>
     </div>
   </body>
 </html>
