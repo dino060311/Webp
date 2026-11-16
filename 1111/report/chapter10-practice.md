@@ -6,16 +6,20 @@
 
 ```html
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<title>HTML5</title></head>
-<body>
-<h3>HTML5</h3>
-<hr>
-<p>
-HTML5를 학습하는 사이트입니다.
-여기서 HTML5, CSS3, 자바스크립트를
-배울 수 있습니다.</p>
-</body></html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>HTML5</title>
+  </head>
+  <body>
+    <h3>HTML5</h3>
+    <hr />
+    <p>
+      HTML5를 학습하는 사이트입니다. 여기서 HTML5, CSS3, 자바스크립트를 배울 수
+      있습니다.
+    </p>
+  </body>
+</html>
 ```
 
 **정답:**
@@ -372,9 +376,9 @@ onload → showTime() → 1초 후 showTime() → 1초 후 showTime() → ...
 
 `timerId`가 `null`인지로 시계 상태를 구분한다.
 
-| 클릭 전 상태                 | 클릭 시 동작                                           |
-| ---------------------------- | ------------------------------------------------------ |
-| 시계가 가는 중 (`timerId` 있음) | `clearInterval()`로 멈추고 글자를 흐리게 표시          |
+| 클릭 전 상태                    | 클릭 시 동작                                          |
+| ------------------------------- | ----------------------------------------------------- |
+| 시계가 가는 중 (`timerId` 있음) | `clearInterval()`로 멈추고 글자를 흐리게 표시         |
 | 멈춘 상태 (`timerId == null`)   | 현재 시각을 바로 출력하고 `setInterval()`로 다시 시작 |
 
 다시 시작할 때 `showTime()`을 먼저 호출해야 1초를 기다리지 않고 바로 현재 시각으로 바뀐다.
@@ -428,10 +432,21 @@ onload → showTime() → 1초 후 showTime() → 1초 후 showTime() → ...
     <h3>산수 문제를 풀어 봅시다.</h3>
     <p>수식을 계산하여 답을 입력하고 채점 버튼을 누르세요.</p>
     <hr />
-    <div class="row"><span class="expr">5*6</span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr">7+5*3</span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr">23*2</span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr">35-7</span><input class="answer" type="text" size="8" /></div>
+    <div class="row">
+      <span class="expr">5*6</span><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr">7+5*3</span
+      ><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr">23*2</span
+      ><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr">35-7</span
+      ><input class="answer" type="text" size="8" />
+    </div>
     <button onclick="grade()">채점</button>
     <span id="score">0</span>
   </body>
@@ -490,10 +505,18 @@ onload → showTime() → 1초 후 showTime() → 1초 후 showTime() → ...
 
           let answer;
           switch (op) {
-            case "+": answer = a + b; break;
-            case "-": answer = a - b; break;
-            case "*": answer = a * b; break;
-            case "/": answer = parseInt(a / b); break; // 나누기 결과는 정수
+            case "+":
+              answer = a + b;
+              break;
+            case "-":
+              answer = a - b;
+              break;
+            case "*":
+              answer = a * b;
+              break;
+            case "/":
+              answer = parseInt(a / b);
+              break; // 나누기 결과는 정수
           }
 
           exprs[i].textContent = a + op + b;
@@ -531,10 +554,18 @@ onload → showTime() → 1초 후 showTime() → 1초 후 showTime() → ...
       누르면 새로운 문제가 출력됩니다. 나누기 결과는 정수입니다.
     </p>
     <hr />
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
     <button onclick="grade()">채점</button>
     <span id="score">0</span>
     <button onclick="makeQuestions()">다시</button>
@@ -601,10 +632,18 @@ onload → showTime() → 1초 후 showTime() → 1초 후 showTime() → ...
 
           let answer;
           switch (op) {
-            case "+": answer = a + b; break;
-            case "-": answer = a - b; break;
-            case "*": answer = a * b; break;
-            case "/": answer = parseInt(a / b); break;
+            case "+":
+              answer = a + b;
+              break;
+            case "-":
+              answer = a - b;
+              break;
+            case "*":
+              answer = a * b;
+              break;
+            case "/":
+              answer = parseInt(a / b);
+              break;
           }
 
           exprs[i].textContent = a + op + b;
@@ -663,10 +702,18 @@ onload → showTime() → 1초 후 showTime() → 1초 후 showTime() → ...
       남은 시간 <span id="remain">10</span>
     </p>
     <hr />
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
-    <div class="row"><span class="expr"></span><input class="answer" type="text" size="8" /></div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
+    <div class="row">
+      <span class="expr"></span><input class="answer" type="text" size="8" />
+    </div>
     <button onclick="newGame()">다시</button>
     <span id="score">0</span>
   </body>
@@ -685,7 +732,7 @@ newGame() → 남은 시간 10 → 9 → ... → 0 → 타이머 중지 → 자�
 
 ---
 
-## 9. 스크린의 해상도가 1280*1024보다 작은 경우, 웹 페이지가 로드되자마자 “스크린 해상도가 낮습니다!”라고 경고 창을 출력하는 웹 페이지를 작성하라.
+## 9. 스크린의 해상도가 1280\*1024보다 작은 경우, 웹 페이지가 로드되자마자 “스크린 해상도가 낮습니다!”라고 경고 창을 출력하는 웹 페이지를 작성하라.
 
 **정답:**
 
@@ -716,9 +763,9 @@ newGame() → 남은 시간 10 → 9 → ... → 0 → 타이머 중지 → 자�
 
 스크린의 해상도는 `screen` 객체의 `width`와 `height` 프로퍼티로 알 수 있다. 가로가 1280보다 작거나 세로가 1024보다 작으면 해상도가 낮은 것으로 판단한다.
 
-| 프로퍼티        | 의미                              |
-| --------------- | --------------------------------- |
-| `screen.width`  | 스크린의 가로 크기(픽셀)          |
-| `screen.height` | 스크린의 세로 크기(픽셀)          |
+| 프로퍼티        | 의미                     |
+| --------------- | ------------------------ |
+| `screen.width`  | 스크린의 가로 크기(픽셀) |
+| `screen.height` | 스크린의 세로 크기(픽셀) |
 
 ※ `screen.width`와 `screen.height`는 운영체제의 화면 배율이 적용된 값이다. 예를 들어 1920×1080 모니터라도 배율이 125%이면 1536×864로 계산되어 경고창이 출력될 수 있다.
