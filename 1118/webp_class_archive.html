@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="경성대학교 소프트웨어학과 2학년 나현지의 수업 기록. Webp 저장소의 실습 코드를 날짜별로 정리하고 GitHub 커밋 기록으로 연결합니다."
+    />
+    <meta name="theme-color" content="#f7f8f2" />
+    <title>나현지 — 학교에서 배운 것, 날짜별로.</title>
+    <style>
+      :root {
+        --bg: #f7f8f2;
+        --paper: #fff;
+        --ink: #202c27;
+        --muted: #657269;
+        --line: #dce2d7;
+        --green: #245a42;
+        --pale: #eaf0e4;
+        --accent: #dcf58a;
+        --dark: #20382b;
+        --shadow: 0 20px 60px #20382b0b;
+        --nav: rgba(247, 248, 242, 0.93);
+      }
+      [data-theme="dark"] {
+        --bg: #131d18;
+        --paper: #1c2922;
+        --ink: #edf2e9;
+        --muted: #a3b2a6;
+        --line: #34453a;
+        --green: #b3d6b5;
+        --pale: #25382b;
+        --accent: #dcf58a;
+        --dark: #20382b;
+        --shadow: 0 20px 60px #0002;
+        --nav: rgba(19, 29, 24, 0.94);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 100px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", "Noto Sans KR", sans-serif;
+        line-height: 1.75;
+        word-break: keep-all;
+        -webkit-font-smoothing: antialiased;
+      }
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+      button:focus-visible,
+      a:focus-visible {
+        outline: 3px solid var(--green);
+        outline-offset: 5px;
+      }
+      ::selection {
+        background: #dcf58a;
+        color: #20382b;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        vertical-align: middle;
+      }
+      button svg {
+        pointer-events: none;
+      }
+      .wrap {
+        max-width: 1160px;
+        margin: auto;
+        padding: 0 36px;
+      }
+      .mono,
+      .eyebrow,
+      .tag,
+      .num {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+      .skip {
+        position: fixed;
+        top: -100px;
+        left: 20px;
+        background: var(--accent);
+        color: #20382b;
+        padding: 10px 20px;
+        z-index: 99;
+      }
+      .skip:focus {
+        top: 10px;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        border-bottom: 1px solid var(--line);
+        background: var(--nav);
+        backdrop-filter: blur(16px);
+      }
+      .nav-wrap {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.7px;
+      }
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        background: var(--green);
+        color: var(--bg);
+        width: 31px;
+        height: 33px;
+        font-family: monospace;
+        font-size: 17px;
+        border-radius: 4px;
+      }
+      .brand span:last-child {
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .nav {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+      }
+      .nav a {
+        font-size: 12px;
+        color: var(--muted);
+        position: relative;
+        transition: color 0.2s;
+      }
+      .nav a:hover,
+      .nav a.active {
+        color: var(--green);
+      }
+      .nav a.active:after {
+        content: "";
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--green);
+        border-radius: 50%;
+        bottom: -10px;
+        left: 50%;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .icon-btn {
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+      }
+      .menu-btn {
+        display: none;
+      }
+      .theme-sun {
+        display: none;
+      }
+      [data-theme="dark"] .theme-sun {
+        display: block;
+      }
+      [data-theme="dark"] .theme-moon {
+        display: none;
+      }
+      .hero {
+        padding: 90px 0 0;
+      }
+      .hero-top {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 68px;
+        align-items: center;
+        padding-bottom: 75px;
+      }
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: var(--green);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-transform: uppercase;
+      }
+      .eyebrow:before {
+        content: "";
+        width: 22px;
+        height: 1px;
+        background: currentColor;
+      }
+      .hero h1 {
+        font-size: clamp(38px, 4.1vw, 57px);
+        line-height: 1.36;
+        letter-spacing: -2.8px;
+        font-weight: 750;
+        margin: 25px 0;
+      }
+      .hero h1 em {
+        font-style: normal;
+        color: var(--green);
+        position: relative;
+        white-space: nowrap;
+        z-index: 1;
+      }
+      .hero h1 em:after {
+        content: "";
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        width: 100%;
+        height: 13px;
+        background: var(--accent);
+        z-index: -1;
+        opacity: 0.65;
+      }
+      [data-theme="dark"] .hero h1 em:after {
+        opacity: 0.15;
+      }
+      .intro {
+        font-size: 14px;
+        line-height: 1.95;
+        color: var(--muted);
+        max-width: 425px;
+      }
+      .intro strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .hero-name {
+        font-size: 12px;
+        margin-bottom: 13px;
+        letter-spacing: 1px;
+        color: var(--green);
+      }
+      .buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 17px;
+        padding: 12px 21px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        transition: transform 0.2s, background 0.2s;
+      }
+      .btn:hover {
+        transform: translateY(-3px);
+        background: var(--pale);
+      }
+      .btn-primary {
+        background: var(--green);
+        color: var(--bg);
+        border-color: var(--green);
+      }
+      .btn-primary:hover {
+        background: var(--ink);
+      }
+      .btn svg {
+        width: 15px;
+        height: 15px;
+      }
+      .hero-visual {
+        position: relative;
+        padding: 18px 0 25px;
+      }
+      .code-window {
+        background: #20382b;
+        color: #d8e9d3;
+        box-shadow: 0 26px 50px #193b2520;
+        border-radius: 10px;
+        transform: rotate(2deg);
+        overflow: hidden;
+        border: 1px solid #3b5342;
+      }
+      .window-bar {
+        height: 43px;
+        border-bottom: 1px solid #ffffff17;
+        display: flex;
+        align-items: center;
+        padding: 0 17px;
+        gap: 6px;
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #7a8c79;
+      }
+      .dot:nth-child(1) {
+        background: #b3bd9d;
+      }
+      .dot:nth-child(2) {
+        background: #cad4b2;
+      }
+      .dot:nth-child(3) {
+        background: #dcf58a;
+      }
+      .filename {
+        font: 10px monospace;
+        color: #a9bba9;
+        margin: auto;
+        padding-right: 26px;
+      }
+      .code {
+        padding: 26px 22px 35px;
+        font: 12px/2.15 "SFMono-Regular", Consolas, monospace;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+      .ln {
+        display: inline-block;
+        width: 25px;
+        color: #748d79;
+        user-select: none;
+      }
+      .c-comment {
+        color: #92ab91;
+      }
+      .c-key {
+        color: #cfe49c;
+      }
+      .c-string {
+        color: #e1d5a7;
+      }
+      .c-var {
+        color: #a8d5c4;
+      }
+      .code-bottom {
+        padding: 9px 15px;
+        border-top: 1px solid #ffffff17;
+        display: flex;
+        justify-content: space-between;
+        font: 9px monospace;
+        color: #a9bba9;
+      }
+      .floating-note {
+        position: absolute;
+        right: -12px;
+        bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--accent);
+        color: #20382b;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: var(--shadow);
+        transform: rotate(-4deg);
+      }
+      .note-icon {
+        font: 23px monospace;
+      }
+      .floating-note b {
+        display: block;
+        font-size: 11px;
+      }
+      .floating-note small {
+        font: 9px monospace;
+        letter-spacing: 0.5px;
+      }
+      .hero-strip {
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 18px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .hero-strip > span {
+        letter-spacing: 1px;
+      }
+      .strip-items {
+        display: flex;
+        gap: 29px;
+        font-size: 11px;
+        color: var(--green);
+      }
+      .strip-items span:before {
+        content: "+";
+        margin-right: 9px;
+        opacity: 0.6;
+      }
+      .section {
+        padding: 95px 0;
+        scroll-margin-top: 0;
+      }
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 30px;
+        margin-bottom: 37px;
+      }
+      .section h2 {
+        font-size: 32px;
+        line-height: 1.4;
+        letter-spacing: -1.3px;
+        margin-top: 12px;
+        font-weight: 700;
+      }
+      .section-desc {
+        font-size: 12px;
+        color: var(--muted);
+        max-width: 290px;
+      }
+      .section-head .eyebrow {
+        font-size: 10px;
+      }
+      .num {
+        font-size: 10px;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        padding: 3px 8px;
+        border-radius: 3px;
+        margin-right: 2px;
+      }
+      .about-grid {
+        display: grid;
+        grid-template-columns: 0.82fr 1.5fr;
+        gap: 55px;
+      }
+      .profile-card {
+        background: var(--pale);
+        padding: 29px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        display: flex;
+        flex-direction: column;
+        min-height: 330px;
+      }
+      .profile-art {
+        font: 70px/0.9 Georgia, serif;
+        color: var(--green);
+        letter-spacing: -10px;
+        margin: 11px 0 34px;
+      }
+      .profile-card h3 {
+        font-size: 20px;
+        letter-spacing: -0.6px;
+      }
+      .profile-en {
+        font: 10px monospace;
+        letter-spacing: 2px;
+        color: var(--muted);
+        margin: 4px 0 20px;
+      }
+      .profile-link {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        font: 11px monospace;
+        color: var(--green);
+      }
+      .about-copy h3 {
+        font-size: 21px;
+        line-height: 1.6;
+        letter-spacing: -0.7px;
+        margin-bottom: 17px;
+      }
+      .about-copy p {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.95;
+      }
+      .steps {
+        display: flex;
+        margin: 25px 0;
+        gap: 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .step {
+        padding: 15px 0;
+        flex: 1;
+      }
+      .step span {
+        font: 9px monospace;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 3px;
+      }
+      .step b {
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .skill-title {
+        font: 9px monospace;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+      .tag {
+        border: 1px solid var(--line);
+        padding: 4px 9px;
+        border-radius: 4px;
+        font-size: 9px;
+        color: var(--muted);
+        background: var(--paper);
+      }
+      .skill-note {
+        font-size: 10px !important;
+        margin-top: 10px;
+      }
+      .research-section {
+        background: var(--pale);
+        border-block: 1px solid var(--line);
+      }
+      .research-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .research-card {
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 27px;
+        display: flex;
+        flex-direction: column;
+      }
+      .research-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--green);
+        margin-bottom: 27px;
+      }
+      .research-top svg {
+        height: 27px;
+        width: 27px;
+        stroke-width: 1.3;
+      }
+      .research-top span {
+        font: 10px monospace;
+        color: var(--muted);
+      }
+      .research-card h3 {
+        font-size: 17px;
+        letter-spacing: -0.5px;
+        margin-bottom: 13px;
+      }
+      .research-card p {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.9;
+        margin-bottom: 23px;
+      }
+      .research-card a {
+        margin-top: auto;
+        border-top: 1px solid var(--line);
+        padding-top: 15px;
+        font: 10px monospace;
+        color: var(--green);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .research-card a svg {
+        height: 14px;
+        width: 14px;
+      }
+      .project-tools {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 28px;
+        gap: 15px;
+      }
+      .filters {
+        display: flex;
+        gap: 25px;
+      }
+      .filter {
+        border: 0;
+        background: none;
+        color: var(--muted);
+        font-size: 11px;
+        padding: 0 0 13px;
+        border-bottom: 2px solid transparent;
+      }
+      .filter.active {
+        color: var(--green);
+        border-color: var(--green);
+        font-weight: 700;
+      }
+      .project-count {
+        font: 10px monospace;
+        color: var(--muted);
+        margin-bottom: 13px;
+      }
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+      .project-card {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--paper);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.25s, box-shadow 0.25s;
+      }
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow);
+      }
+      .project-card[hidden] {
+        display: none;
+      }
+      .project-cover {
+        height: 172px;
+        position: relative;
+        padding: 22px;
+        overflow: hidden;
+      }
+      .cover-label {
+        font: 9px monospace;
+        letter-spacing: 1px;
+        position: relative;
+        z-index: 2;
+      }
+      .cover-game {
+        background: #233f30;
+        color: #d5e4cb;
+      }
+      .cover-voice {
+        background: #e5ebdc;
+        color: #3f6445;
+      }
+      .cover-study {
+        background: #e9e6da;
+        color: #726d45;
+      }
+      .cover-web {
+        background: #e0e8e2;
+        color: #496a58;
+      }
+      .cover-art {
+        position: absolute;
+        inset: 42px 20px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .game-terminal {
+        width: 75%;
+        font: 11px/1.9 monospace;
+        transform: rotate(-3deg);
+        border: 1px solid #a2bb8d44;
+        padding: 12px 17px;
+        background: #ffffff06;
+        box-shadow: 9px 9px #00000012;
+      }
+      .game-terminal span {
+        color: #dcf58a;
+      }
+      .voice-art {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        height: 60px;
+      }
+      .voice-art i {
+        width: 5px;
+        background: #517652;
+        border-radius: 4px;
+        height: var(--h);
+        opacity: 0.75;
+      }
+      .voice-caption {
+        position: absolute;
+        right: 25px;
+        bottom: 20px;
+        font-size: 10px;
+        color: #52704b;
+      }
+      .tracker {
+        width: 69%;
+        padding: 14px 16px;
+        background: #fbfaf3;
+        border: 1px solid #d3cdb6;
+        border-radius: 4px;
+        transform: rotate(3deg);
+        color: #6a674b;
+      }
+      .tracker small {
+        font: 8px monospace;
+        letter-spacing: 2px;
+        display: block;
+      }
+      .tracker strong {
+        font: 27px monospace;
+      }
+      .tracker .bars {
+        display: flex;
+        align-items: flex-end;
+        height: 25px;
+        gap: 5px;
+        margin-top: 5px;
+      }
+      .bars i {
+        background: #8e9971;
+        flex: 1;
+        height: var(--h);
+        border-radius: 2px;
+      }
+      .web-art {
+        font: 44px monospace;
+        color: #5c7a63;
+        letter-spacing: -4px;
+      }
+      .web-art small {
+        font: 9px monospace;
+        display: block;
+        letter-spacing: 2px;
+        text-align: center;
+        margin-top: 5px;
+      }
+      .project-body {
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+      .project-meta {
+        font: 9px monospace;
+        color: var(--muted);
+        letter-spacing: 1px;
+        margin-bottom: 9px;
+      }
+      .project-body h3 {
+        font-size: 20px;
+        letter-spacing: -0.6px;
+        margin-bottom: 12px;
+      }
+      .project-body p {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.9;
+        margin-bottom: 18px;
+      }
+      .project-footer {
+        border-top: 1px solid var(--line);
+        margin-top: auto;
+        padding-top: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .project-footer .tags {
+        gap: 4px;
+      }
+      .project-footer .tag {
+        font-size: 8px;
+        padding: 2px 6px;
+        background: var(--bg);
+      }
+      .code-link {
+        font-size: 10px;
+        white-space: nowrap;
+        color: var(--green);
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .code-link svg {
+        width: 13px;
+        height: 13px;
+      }
+      .archive-row {
+        margin-top: 25px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border: 1px dashed var(--line);
+        padding: 18px 22px;
+        border-radius: 5px;
+      }
+      .archive-row .mono {
+        font-size: 9px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+      .archive-links {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+      }
+      .archive-links a {
+        font-size: 11px;
+        color: var(--green);
+      }
+      .archive-links a span {
+        font-size: 10px;
+        color: var(--muted);
+        margin-left: 5px;
+      }
+      .writing-section {
+        border-top: 1px solid var(--line);
+      }
+      .writing-list {
+        border-top: 1px solid var(--line);
+      }
+      .writing-item {
+        display: grid;
+        grid-template-columns: 40px 1fr auto;
+        gap: 23px;
+        align-items: center;
+        padding: 27px 12px;
+        border-bottom: 1px solid var(--line);
+        transition: background 0.2s;
+      }
+      .writing-item:hover {
+        background: var(--pale);
+      }
+      .writing-index {
+        font: 11px monospace;
+        color: var(--muted);
+      }
+      .writing-meta {
+        font: 9px monospace;
+        color: var(--green);
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+      }
+      .writing-item h3 {
+        font-size: 17px;
+        letter-spacing: -0.5px;
+      }
+      .writing-item p {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+      .writing-arrow {
+        width: 37px;
+        height: 37px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: var(--green);
+      }
+      .writing-arrow svg {
+        width: 16px;
+        height: 16px;
+      }
+      .writing-note {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 16px;
+      }
+      .contact-section {
+        padding: 20px 0 75px;
+      }
+      .contact-panel {
+        background: #20382b;
+        color: #eef2e7;
+        padding: 55px;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+      }
+      .contact-panel:after {
+        content: "{ }";
+        position: absolute;
+        right: 35px;
+        top: 30px;
+        font: 180px Georgia, serif;
+        color: #ffffff06;
+        pointer-events: none;
+      }
+      .contact-panel .eyebrow {
+        color: #c6d99b;
+        font-size: 10px;
+      }
+      .contact-panel h2 {
+        font-size: 34px;
+        margin: 16px 0;
+        letter-spacing: -1.3px;
+        line-height: 1.5;
+        position: relative;
+        z-index: 1;
+      }
+      .contact-panel p {
+        color: #bac8b8;
+        font-size: 12px;
+        max-width: 540px;
+      }
+      .contact-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+        gap: 20px;
+        position: relative;
+        z-index: 1;
+      }
+      .contact-bottom .btn {
+        background: var(--accent);
+        color: #20382b;
+        border-color: var(--accent);
+      }
+      .contact-id {
+        font: 10px monospace;
+        letter-spacing: 1px;
+        color: #bbcbb9;
+      }
+      .contact-id span {
+        display: block;
+        color: #7e997f;
+        font-size: 9px;
+        margin-bottom: 5px;
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 23px 0;
+      }
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font: 9px/1.8 monospace;
+        gap: 15px;
+      }
+      .footer-right {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+      }
+      .footer-right a {
+        color: var(--green);
+      }
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 0;
+        background: var(--green);
+        z-index: 50;
+      }
+      @media (min-width: 1400px) {
+        .hero {
+          padding-top: 110px;
+        }
+        .hero-top {
+          padding-bottom: 95px;
+        }
+      }
+      @media (max-width: 1000px) {
+        .nav {
+          gap: 16px;
+        }
+        .hero-top {
+          gap: 35px;
+        }
+        .hero h1 {
+          font-size: 43px;
+        }
+        .code {
+          font-size: 10px;
+          padding-inline: 14px;
+        }
+        .about-grid {
+          gap: 32px;
+        }
+        .research-card {
+          padding: 22px;
+        }
+        .research-card h3 {
+          font-size: 15px;
+        }
+        .project-footer {
+          flex-wrap: wrap;
+        }
+        .floating-note {
+          right: -5px;
+        }
+      }
+      @media (max-width: 760px) {
+        .wrap {
+          padding: 0 23px;
+        }
+        .nav-wrap {
+          height: 68px;
+        }
+        .nav-actions {
+          margin-left: auto;
+        }
+        .menu-btn {
+          display: grid;
+        }
+        .nav {
+          display: none;
+          position: absolute;
+          top: 68px;
+          left: 0;
+          right: 0;
+          background: var(--bg);
+          border-bottom: 1px solid var(--line);
+          padding: 20px 25px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        .nav.open {
+          display: grid;
+        }
+        .nav a {
+          font-size: 13px;
+          text-align: center;
+        }
+        .nav a.active:after {
+          bottom: -5px;
+        }
+        .hero {
+          padding-top: 50px;
+        }
+        .hero-top {
+          grid-template-columns: 1fr;
+          gap: 37px;
+          padding-bottom: 45px;
+        }
+        .hero h1 {
+          font-size: 43px;
+          letter-spacing: -2px;
+        }
+        .hero-visual {
+          max-width: 470px;
+          width: 95%;
+          margin: 0 auto;
+        }
+        .code {
+          font-size: 12px;
+          padding: 22px;
+        }
+        .hero-strip {
+          align-items: flex-start;
+          gap: 12px;
+          flex-direction: column;
+          padding-block: 16px;
+        }
+        .strip-items {
+          gap: 18px;
+          flex-wrap: wrap;
+          font-size: 10px;
+        }
+        .hero-strip > span {
+          font-size: 9px;
+        }
+        .section {
+          padding: 65px 0;
+        }
+        .section h2 {
+          font-size: 27px;
+        }
+        .section-head {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 15px;
+          margin-bottom: 28px;
+        }
+        .section-desc {
+          max-width: 100%;
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+        .profile-card {
+          min-height: 0;
+          padding: 25px;
+          display: grid;
+          grid-template-columns: 85px 1fr;
+          column-gap: 20px;
+        }
+        .profile-art {
+          grid-row: 1/3;
+          font-size: 55px;
+          margin: 4px 0 0;
+          align-self: center;
+        }
+        .profile-card h3 {
+          align-self: end;
+        }
+        .profile-en {
+          margin-bottom: 0;
+        }
+        .profile-link {
+          grid-column: 1/-1;
+          margin-top: 20px;
+          padding-top: 14px;
+        }
+        .research-cards {
+          grid-template-columns: 1fr;
+        }
+        .research-card {
+          padding: 25px;
+        }
+        .research-top {
+          margin-bottom: 15px;
+        }
+        .research-card h3 {
+          font-size: 18px;
+        }
+        .research-card p {
+          margin-bottom: 20px;
+        }
+        .project-grid {
+          grid-template-columns: 1fr;
+        }
+        .project-cover {
+          height: 180px;
+        }
+        .project-body h3 {
+          font-size: 20px;
+        }
+        .project-footer {
+          flex-wrap: nowrap;
+        }
+        .archive-row {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .archive-links {
+          gap: 17px;
+        }
+        .writing-item {
+          grid-template-columns: 23px 1fr 28px;
+          gap: 12px;
+          padding: 23px 0;
+        }
+        .writing-item h3 {
+          font-size: 15px;
+        }
+        .writing-item p {
+          font-size: 11px;
+        }
+        .writing-arrow {
+          width: 28px;
+          height: 28px;
+        }
+        .contact-section {
+          padding: 0 0 50px;
+        }
+        .contact-panel {
+          padding: 33px 26px;
+        }
+        .contact-panel h2 {
+          font-size: 27px;
+        }
+        .contact-panel:after {
+          right: -10px;
+          font-size: 140px;
+        }
+        .contact-bottom {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 24px;
+        }
+        .footer-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .footer-right {
+          width: 100%;
+          justify-content: space-between;
+        }
+        .filter {
+          font-size: 10px;
+        }
+        .filters {
+          gap: 20px;
+        }
+        .intro {
+          font-size: 13px;
+        }
+        .btn {
+          font-size: 11px;
+        }
+        .eyebrow {
+          font-size: 10px;
+        }
+      }
+      @media (max-width: 370px) {
+        .hero h1 {
+          font-size: 35px;
+        }
+        .code {
+          font-size: 10px;
+        }
+        .strip-items {
+          gap: 10px;
+        }
+        .project-footer {
+          flex-wrap: wrap;
+        }
+        .steps {
+          flex-wrap: wrap;
+        }
+        .step {
+          min-width: 50%;
+        }
+        .project-count {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *:before,
+        *:after {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+      @media print {
+        header,
+        .hero-visual,
+        .filters,
+        .progress,
+        .nav-actions {
+          display: none;
+        }
+        .section {
+          padding: 25px 0;
+        }
+        .hero {
+          padding-top: 20px;
+        }
+        .hero-top {
+          display: block;
+        }
+        .project-card,
+        .research-card {
+          break-inside: avoid;
+        }
+        .contact-panel {
+          background: #fff;
+          color: #222;
+          border: 1px solid #ccc;
+        }
+        .contact-panel p {
+          color: #555;
+        }
+        .wrap {
+          padding: 0 15px;
+        }
+        .project-cover {
+          height: 100px;
+        }
+        body {
+          font-size: 11px;
+        }
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+      .hero h1 {
+        font-size: clamp(37px, 4vw, 54px);
+      }
+      .hero-visual .code {
+        font-size: 11px;
+      }
+      .hero-name {
+        font-size: 11px;
+      }
+      .profile-school {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 8px 0 20px;
+        line-height: 1.8;
+      }
+      .profile-card .profile-en {
+        margin-bottom: 0;
+      }
+      .profile-card .profile-link {
+        margin-top: auto;
+      }
+      .school-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 22px;
+      }
+      .school-tags span {
+        border: 1px solid var(--line);
+        background: var(--paper);
+        border-radius: 4px;
+        padding: 5px 10px;
+        font-size: 10px;
+        color: var(--green);
+      }
+      .student-note {
+        font-size: 10px !important;
+        margin-top: 12px;
+        color: var(--muted);
+      }
+      .record-tools {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 20px;
+        gap: 15px;
+      }
+      .record-tools .filters {
+        gap: 22px;
+      }
+      .records-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font: 10px monospace;
+        color: var(--muted);
+        margin: 0 0 15px;
+      }
+      .record-count {
+        margin-bottom: 13px;
+        font: 10px monospace;
+        color: var(--muted);
+      }
+      .record-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 17px;
+      }
+      .record-card {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--paper);
+        padding: 23px;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .record-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+      }
+      .record-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+      .record-label .mono {
+        font-size: 9px;
+        color: var(--muted);
+        letter-spacing: 0.5px;
+      }
+      .folder-symbol {
+        width: 22px;
+        height: 16px;
+        border: 1px solid var(--green);
+        background: var(--pale);
+        border-radius: 2px;
+        position: relative;
+        margin-top: 5px;
+      }
+      .folder-symbol:before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: -1px;
+        width: 10px;
+        height: 5px;
+        background: var(--pale);
+        border: 1px solid var(--green);
+        border-bottom: 0;
+        border-radius: 2px 2px 0 0;
+      }
+      .record-date {
+        font: 34px/1.2 Georgia, serif;
+        color: var(--green);
+        letter-spacing: -1px;
+      }
+      .record-date small {
+        font: 10px monospace;
+        margin-left: 7px;
+        color: var(--muted);
+        letter-spacing: 0;
+      }
+      .record-card h3 {
+        font-size: 15px;
+        letter-spacing: -0.4px;
+        margin: 13px 0 9px;
+      }
+      .record-card p {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.95;
+        flex: 1;
+      }
+      .record-path {
+        font: 9px monospace;
+        color: var(--muted);
+        margin-top: 15px;
+      }
+      .record-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+        margin-top: 15px;
+        gap: 8px;
+      }
+      .record-footer a {
+        font-size: 10px;
+        color: var(--green);
+      }
+      .record-footer button {
+        font: 9px inherit;
+        color: var(--muted);
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      .record-footer button:hover {
+        color: var(--green);
+      }
+      .record-footer a:hover {
+        text-decoration: underline;
+      }
+      .edit-toggle {
+        font-size: 10px;
+        background: transparent;
+        border: 0;
+        color: var(--green);
+        padding: 0 0 13px;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .record-tools-right {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+      }
+      .record-toolbar-note {
+        font-size: 10px;
+        color: var(--muted);
+        margin: 17px 0 0;
+      }
+      .empty-records {
+        border: 1px dashed var(--line);
+        padding: 30px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .sort-select {
+        font: 10px inherit;
+        background: var(--paper);
+        color: var(--muted);
+        border: 1px solid var(--line);
+        padding: 4px 7px;
+        margin-bottom: 11px;
+        border-radius: 3px;
+      }
+      .study-note-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 25px;
+        margin-top: 28px;
+      }
+      .tree-box {
+        border: 1px solid var(--line);
+        background: var(--pale);
+        border-radius: 5px;
+        padding: 23px;
+      }
+      .tree-heading {
+        font: 9px monospace;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+      .tree-box pre {
+        font: 11px/1.9 Consolas, monospace;
+        color: var(--green);
+        margin: 0;
+        word-break: normal;
+        white-space: pre-wrap;
+      }
+      .small-note {
+        font-size: 10px;
+        color: var(--muted);
+        line-height: 1.9;
+        margin-top: 15px;
+      }
+      .note-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 25px;
+      }
+      .note-card h3 {
+        font-size: 17px;
+        letter-spacing: -0.5px;
+        margin: 9px 0 15px;
+      }
+      .note-card p {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.95;
+      }
+      .note-line {
+        border-top: 1px solid var(--line);
+        padding-top: 17px;
+        margin-top: 22px;
+        font-size: 11px;
+        color: var(--green);
+        line-height: 1.95;
+      }
+      .edit-dialog {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 28px;
+        max-width: 470px;
+        width: calc(100% - 40px);
+        background: var(--bg);
+        color: var(--ink);
+        box-shadow: var(--shadow);
+      }
+      .edit-dialog::backdrop {
+        background: #10201888;
+        backdrop-filter: blur(3px);
+      }
+      .edit-dialog h2 {
+        font-size: 20px;
+        letter-spacing: -0.6px;
+        margin: 0 0 6px;
+      }
+      .edit-dialog > p {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+      .edit-dialog label {
+        display: block;
+        font-size: 11px;
+        margin: 14px 0 6px;
+      }
+      .edit-dialog input,
+      .edit-dialog textarea {
+        width: 100%;
+        font: 12px/1.8 inherit;
+        color: var(--ink);
+        background: var(--paper);
+        border: 1px solid var(--line);
+        padding: 10px;
+        border-radius: 4px;
+      }
+      .edit-dialog textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+      .dialog-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .dialog-buttons .btn {
+        font-size: 10px;
+        padding: 8px 14px;
+      }
+      .save-message {
+        color: var(--green);
+        font-size: 10px;
+        min-height: 18px;
+      }
+      .edit-guidance {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 15px;
+        border-left: 2px solid var(--line);
+        padding-left: 10px;
+      }
+      @media (max-width: 1000px) {
+        .record-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 760px) {
+        .hero h1 {
+          font-size: 39px;
+          letter-spacing: -2px;
+        }
+        .hero-visual .code {
+          font-size: 10px;
+          padding-inline: 13px;
+        }
+        .hero-name {
+          font-size: 10px;
+        }
+        .profile-school {
+          grid-column: 2;
+          margin: 7px 0 0;
+          font-size: 11px;
+        }
+        .profile-card .profile-art {
+          grid-row: 1/4;
+          align-self: center;
+        }
+        .profile-card .profile-link {
+          margin-top: 19px;
+        }
+        .record-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+        .record-card {
+          padding: 18px 15px;
+        }
+        .record-date {
+          font-size: 29px;
+        }
+        .record-label .mono {
+          font-size: 8px;
+        }
+        .record-card h3 {
+          font-size: 13px;
+        }
+        .record-card p {
+          font-size: 11px;
+        }
+        .record-tools {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 10px;
+          padding-bottom: 3px;
+        }
+        .record-tools .filters {
+          gap: 22px;
+        }
+        .record-tools .filter {
+          padding-bottom: 9px;
+        }
+        .record-tools-right {
+          width: 100%;
+          justify-content: space-between;
+        }
+        .edit-toggle {
+          padding-bottom: 8px;
+        }
+        .sort-select {
+          margin-bottom: 8px;
+        }
+        .study-note-grid {
+          grid-template-columns: 1fr;
+        }
+        .record-count {
+          display: none;
+        }
+        .record-footer {
+          align-items: flex-start;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .record-footer a {
+          font-size: 10px;
+        }
+        .record-footer button {
+          font-size: 9px;
+        }
+        .record-path {
+          font-size: 8px;
+        }
+        .record-tools .filter {
+          font-size: 11px;
+        }
+        .record-tools-right .edit-toggle {
+          font-size: 10px;
+        }
+        .hero-strip .strip-items {
+          gap: 17px;
+        }
+      }
+      @media (max-width: 370px) {
+        .hero h1 {
+          font-size: 34px;
+        }
+        .hero-visual .code {
+          font-size: 9px;
+        }
+        .record-grid {
+          grid-template-columns: 1fr;
+        }
+        .record-date {
+          font-size: 34px;
+        }
+      }
+      @media print {
+        .edit-toggle,
+        .record-edit,
+        .record-tools {
+          display: none !important;
+        }
+        .record-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .record-card {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+Student information and learning workflow: provided by the user.
+Repository scope: https://github.com/dino060311/Webp
+Folder names checked: 2026-11-18 KST.
+Detailed per-folder lesson topics were not accessible and are not inferred.
+Content is limited to the student class-record archive.
+-->
+    <a class="skip" href="#main">본문으로 바로가기</a>
+    <div class="progress" aria-hidden="true"></div>
+    <header>
+      <div class="wrap nav-wrap">
+        <a class="brand" href="#home" aria-label="나현지 수업 기록 홈"
+          ><span class="brand-mark">n.</span> hyeonji<span
+            >/ class notes</span
+          ></a
+        >
+        <nav class="nav" id="navigation" aria-label="주 메뉴">
+          <a href="#home" class="active" aria-current="location">Home</a
+          ><a href="#about">About</a><a href="#learning">Learning</a
+          ><a href="#records">Records</a><a href="#notes">Notes</a
+          ><a href="#contact">Contact</a>
+        </nav>
+        <div class="nav-actions">
+          <button
+            class="icon-btn"
+            id="theme-toggle"
+            aria-label="다크 모드로 전환"
+            title="화면 테마 변경"
+          >
+            <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M20.5 14A8.7 8.7 0 0 1 10 3.5 8.7 8.7 0 1 0 20.5 14Z"
+              /></svg
+            ><svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
+              />
+            </svg></button
+          ><button
+            class="icon-btn menu-btn"
+            id="menu-toggle"
+            aria-label="메뉴 열기"
+            aria-expanded="false"
+            aria-controls="navigation"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 7h14M5 12h14M5 17h14" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <div class="wrap">
+          <div class="hero-top">
+            <div>
+              <div class="eyebrow">My university class notes</div>
+              <h1 id="hero-title">
+                수업에서 배운 걸,<br />내 코드로<br /><em>기록합니다.</em>
+              </h1>
+              <div class="hero-name mono">
+                나현지 &nbsp; / &nbsp; 경성대학교 소프트웨어학과 2학년
+              </div>
+              <p class="intro">
+                안녕하세요. 소프트웨어를 공부하는 나현지입니다.<br />학교에서
+                배운 내용을 날짜별로 정리하고,<br /><strong
+                  >실습한 코드를 GitHub에 남기고 있습니다.</strong
+                >
+              </p>
+              <div class="buttons">
+                <a class="btn btn-primary" href="#records"
+                  >날짜별 기록 보기
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12h14m-5-5 5 5-5 5" /></svg></a
+                ><a
+                  class="btn"
+                  href="https://github.com/dino060311/Webp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >GitHub 방문
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 17 17 7M7 7h10v10" /></svg
+                ></a>
+              </div>
+            </div>
+            <div
+              class="hero-visual"
+              aria-label="수업을 듣고 실습한 뒤 날짜별로 정리하고 커밋하는 학습 흐름을 코드 형식으로 표현한 장식입니다."
+            >
+              <div class="code-window">
+                <div class="window-bar">
+                  <i class="dot"></i><i class="dot"></i><i class="dot"></i
+                  ><span class="filename">my-class-notes.txt</span>
+                </div>
+                <div class="code" aria-hidden="true">
+                  <span class="ln">01</span
+                  ><span class="c-comment"
+                    >// 오늘 배운 내용을 내 기록으로.</span
+                  >
+                  <span class="ln">02</span>
+                  <span class="ln">03</span><span class="c-key">student</span> =
+                  <span class="c-string">"나현지"</span>
+                  <span class="ln">04</span><span class="c-key">school</span> =
+                  <span class="c-string">"경성대학교"</span>
+                  <span class="ln">05</span><span class="c-key">major</span> =
+                  <span class="c-string">"소프트웨어학과"</span>
+                  <span class="ln">06</span><span class="c-key">year</span> =
+                  <span class="c-string">"2학년"</span>
+                  <span class="ln">07</span>
+                  <span class="ln">08</span
+                  ><span class="c-var">수업 듣기</span> →
+                  <span class="c-var">직접 실습하기</span>
+                  <span class="ln">09</span
+                  ><span class="c-var">날짜별 정리</span> →
+                  <span class="c-var">GitHub에 커밋</span>
+                  <span class="ln">10</span
+                  ><span class="c-comment">// 아직 배우는 중입니다 :)</span>
+                </div>
+                <div class="code-bottom">
+                  <span>● &nbsp; learning step by step</span
+                  ><span>학습 흐름을 표현한 예시</span>
+                </div>
+              </div>
+              <div class="floating-note">
+                <span class="note-icon">↗</span>
+                <div>
+                  <b>오늘 배운 것부터, 하나씩.</b
+                  ><small>LEARN. PRACTICE. COMMIT.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-strip">
+            <span class="mono">MY LEARNING ROUTINE</span>
+            <div class="strip-items mono">
+              <span>수업</span><span>실습</span><span>날짜별 정리</span
+              ><span>GitHub 커밋</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow"><span class="num">01</span> About me</div>
+              <h2 id="about-title">차근차근 배우고 있는 2학년입니다.</h2>
+            </div>
+            <p class="section-desc">
+              거창한 프로젝트 소개보다,<br />학교에서 배우는 과정을 담았습니다.
+            </p>
+          </div>
+          <div class="about-grid">
+            <div class="profile-card">
+              <div class="profile-art" aria-hidden="true">nh.</div>
+              <h3>나현지</h3>
+              <div class="profile-en">NA HYEONJI</div>
+              <div class="profile-school">
+                경성대학교 소프트웨어학과<br />2학년 재학 중
+              </div>
+              <a
+                class="profile-link"
+                href="https://github.com/dino060311/Webp"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><span>dino060311 / Webp</span
+                ><span aria-hidden="true">↗</span></a
+              >
+            </div>
+            <div class="about-copy">
+              <h3>완성된 결과만큼,<br />배우는 과정도 남기고 싶습니다.</h3>
+              <p>
+                저는 경성대학교 소프트웨어학과에 재학 중인 2학년 나현지입니다.
+                이 사이트는 학교 수업에서 작성한 코드와 실습 내용을 모아 두는
+                공간입니다.
+              </p>
+              <p style="margin-top: 12px">
+                Webp 저장소에 날짜별 폴더를 만들고, 수업에서 배운 내용을 정리해
+                커밋하고 있습니다. 언제 어떤 실습을 했는지 다시 찾아볼 수 있도록
+                기록합니다.
+              </p>
+              <div class="steps">
+                <div class="step">
+                  <span>01 / LEARN</span><b>수업에서 배우기</b>
+                </div>
+                <div class="step">
+                  <span>02 / PRACTICE</span><b>코드로 실습하기</b>
+                </div>
+                <div class="step">
+                  <span>03 / COMMIT</span><b>기록으로 남기기</b>
+                </div>
+              </div>
+              <div class="skill-title">ABOUT THIS PAGE</div>
+              <div class="school-tags">
+                <span>경성대학교</span><span>소프트웨어학과</span
+                ><span>2학년</span><span>수업 실습 기록</span>
+              </div>
+              <p class="student-note">
+                이 페이지에서는 Webp 저장소의 날짜별 수업 기록만 소개합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section research-section"
+        id="learning"
+        aria-labelledby="learning-title"
+      >
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow"><span class="num">02</span> How I learn</div>
+              <h2 id="learning-title">수업 내용을 내 기록으로 만드는 방법.</h2>
+            </div>
+            <p class="section-desc">
+              배우고, 실습하고, 남기기.<br />복잡하지 않게 꾸준히 기록하려고
+              합니다.
+            </p>
+          </div>
+          <div class="research-cards">
+            <article class="research-card">
+              <div class="research-top">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 5c-3-2-6-2-10-1v15c4-1 7-1 10 1 3-2 6-2 10-1V4c-4-1-7-1-10 1Zm0 0v15"
+                  /></svg
+                ><span>STEP / 01</span>
+              </div>
+              <h3>수업 내용을 실습하기</h3>
+              <p>
+                학교에서 배운 내용을 직접 코드로 작성합니다. 수업에서 만든
+                예제를 실행해보며 배운 내용을 익힙니다.
+              </p>
+              <a href="#records"
+                >수업 기록 보기 <span aria-hidden="true">↓</span></a
+              >
+            </article>
+            <article class="research-card">
+              <div class="research-top">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 6h7l2 3h9v11H3V6Zm0 0V4h7l2 2h7v3" /></svg
+                ><span>STEP / 02</span>
+              </div>
+              <h3>날짜별 폴더에 정리하기</h3>
+              <p>
+                실습 코드는 0902, 0909처럼 날짜별 폴더에 모읍니다. 나중에 수업
+                날짜를 기준으로 다시 찾아볼 수 있게 정리합니다.
+              </p>
+              <a href="#records"
+                >날짜별 폴더 보기 <span aria-hidden="true">↓</span></a
+              >
+            </article>
+            <article class="research-card">
+              <div class="research-top">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="7" cy="5" r="3" />
+                  <circle cx="17" cy="7" r="3" />
+                  <circle cx="7" cy="19" r="3" />
+                  <path d="M7 8v8m10-6v2c0 4-10 0-10 4" /></svg
+                ><span>STEP / 03</span>
+              </div>
+              <h3>GitHub에 커밋하기</h3>
+              <p>
+                정리한 내용을 커밋해 저장소에 남깁니다. 바뀐 내용을 확인하고,
+                지난 실습을 다시 볼 수 있는 기록으로 쌓아갑니다.
+              </p>
+              <a
+                href="https://github.com/dino060311/Webp/commits/main/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >커밋 기록 보기 ↗</a
+              >
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="records" aria-labelledby="records-title">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">
+                <span class="num">03</span> Class records
+              </div>
+              <h2 id="records-title">날짜별로 모아 둔 수업 기록.</h2>
+            </div>
+            <p class="section-desc">
+              폴더를 누르면 해당 날짜의<br />GitHub 실습 코드를 볼 수 있습니다.
+            </p>
+          </div>
+          <div class="record-tools" id="record-tools" hidden>
+            <div class="filters" role="group" aria-label="월별 수업 기록 분류">
+              <button
+                class="filter active"
+                type="button"
+                data-filter="all"
+                aria-pressed="true"
+              >
+                전체</button
+              ><button
+                class="filter"
+                type="button"
+                data-filter="09"
+                aria-pressed="false"
+              >
+                9월</button
+              ><button
+                class="filter"
+                type="button"
+                data-filter="10"
+                aria-pressed="false"
+              >
+                10월</button
+              ><button
+                class="filter"
+                type="button"
+                data-filter="11"
+                aria-pressed="false"
+              >
+                11월
+              </button>
+            </div>
+            <div class="record-tools-right">
+              <span class="record-count" id="record-count" aria-live="polite"
+                >10 RECORDS</span
+              ><select
+                class="sort-select"
+                id="sort"
+                aria-label="기록 정렬 순서"
+              >
+                <option value="asc">오래된 날짜부터</option>
+                <option value="desc">최근 날짜부터</option>
+              </select>
+            </div>
+          </div>
+          <div class="record-grid" id="record-grid">
+            <article class="record-card" data-date="0902" data-month="09">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 01</span>
+              </div>
+              <div class="record-date">09.02<small>수업 기록</small></div>
+              <h3 class="record-title">9월 2일 수업 기록</h3>
+              <p class="record-summary">
+                9월 2일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 0902</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/0902"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="9월 2일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="0909" data-month="09">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 02</span>
+              </div>
+              <div class="record-date">09.09<small>수업 기록</small></div>
+              <h3 class="record-title">9월 9일 수업 기록</h3>
+              <p class="record-summary">
+                9월 9일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 0909</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/0909"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="9월 9일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="0916" data-month="09">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 03</span>
+              </div>
+              <div class="record-date">09.16<small>수업 기록</small></div>
+              <h3 class="record-title">9월 16일 수업 기록</h3>
+              <p class="record-summary">
+                9월 16일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 0916</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/0916"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="9월 16일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="0923" data-month="09">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 04</span>
+              </div>
+              <div class="record-date">09.23<small>수업 기록</small></div>
+              <h3 class="record-title">9월 23일 수업 기록</h3>
+              <p class="record-summary">
+                9월 23일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 0923</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/0923"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="9월 23일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="0930" data-month="09">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 05</span>
+              </div>
+              <div class="record-date">09.30<small>수업 기록</small></div>
+              <h3 class="record-title">9월 30일 수업 기록</h3>
+              <p class="record-summary">
+                9월 30일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 0930</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/0930"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="9월 30일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="1007" data-month="10">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 06</span>
+              </div>
+              <div class="record-date">10.07<small>수업 기록</small></div>
+              <h3 class="record-title">10월 7일 수업 기록</h3>
+              <p class="record-summary">
+                10월 7일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 1007</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/1007"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="10월 7일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="1014" data-month="10">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 07</span>
+              </div>
+              <div class="record-date">10.14<small>수업 기록</small></div>
+              <h3 class="record-title">10월 14일 수업 기록</h3>
+              <p class="record-summary">
+                10월 14일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 1014</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/1014"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="10월 14일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="1028" data-month="10">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 08</span>
+              </div>
+              <div class="record-date">10.28<small>수업 기록</small></div>
+              <h3 class="record-title">10월 28일 수업 기록</h3>
+              <p class="record-summary">
+                10월 28일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 1028</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/1028"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="10월 28일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="1104" data-month="11">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 09</span>
+              </div>
+              <div class="record-date">11.04<small>수업 기록</small></div>
+              <h3 class="record-title">11월 4일 수업 기록</h3>
+              <p class="record-summary">
+                11월 4일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 1104</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/1104"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="11월 4일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+            <article class="record-card" data-date="1111" data-month="11">
+              <div class="record-label">
+                <span class="folder-symbol" aria-hidden="true"></span
+                ><span class="mono">CLASS NOTE / 10</span>
+              </div>
+              <div class="record-date">11.11<small>수업 기록</small></div>
+              <h3 class="record-title">11월 11일 수업 기록</h3>
+              <p class="record-summary">
+                11월 11일 수업에서 작성한 실습 코드를 정리한 폴더입니다. 배운
+                내용은 코드와 함께 GitHub에 남깁니다.
+              </p>
+              <div class="record-path">Webp / 1111</div>
+              <div class="record-footer">
+                <a
+                  href="https://github.com/dino060311/Webp/tree/main/1111"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="11월 11일 GitHub 실습 코드 보기"
+                  >실습 코드 보기 ↗</a
+                >
+              </div>
+            </article>
+          </div>
+          <p class="record-toolbar-note">
+            날짜는 저장소 폴더명을 월·일로 표시했습니다. 폴더 내부의 세부 실습
+            주제는 확인하지 못해 임의로 붙이지 않았습니다.
+          </p>
+          <div class="archive-row">
+            <span class="mono">MY CLASS REPOSITORY</span>
+            <div class="archive-links">
+              <a
+                href="https://github.com/dino060311/Webp"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Webp <span>전체 폴더 보기 ↗</span></a
+              ><a
+                href="https://github.com/dino060311/Webp/commits/main/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Commits <span>변경 기록 보기 ↗</span></a
+              >
+            </div>
+          </div>
+          <p id="save-message" class="save-message" role="status"></p>
+        </div>
+      </section>
+
+      <section
+        class="section writing-section"
+        id="notes"
+        aria-labelledby="notes-title"
+      >
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">
+                <span class="num">04</span> Notes & GitHub
+              </div>
+              <h2 id="notes-title">작은 실습도, 하나의 기록으로.</h2>
+            </div>
+            <p class="section-desc">
+              날짜별 폴더와 커밋을 통해<br />수업에서 작성한 코드를 다시
+              찾아봅니다.
+            </p>
+          </div>
+          <div class="writing-list">
+            <a
+              class="writing-item"
+              href="https://github.com/dino060311/Webp"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span class="writing-index">01</span>
+              <div>
+                <div class="writing-meta">WEBP / CLASS REPOSITORY</div>
+                <h3>수업 실습 코드 모아보기</h3>
+                <p>
+                  Webp 저장소에서 날짜별 폴더와 실습 파일을 살펴볼 수 있습니다.
+                </p>
+              </div>
+              <span class="writing-arrow" aria-hidden="true">↗</span></a
+            >
+            <a
+              class="writing-item"
+              href="https://github.com/dino060311/Webp/commits/main/"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span class="writing-index">02</span>
+              <div>
+                <div class="writing-meta">COMMITS / LEARNING HISTORY</div>
+                <h3>커밋으로 남긴 변경 기록</h3>
+                <p>
+                  실습 코드를 추가하거나 수정한 내용을 GitHub에서 확인할 수
+                  있습니다.
+                </p>
+              </div>
+              <span class="writing-arrow" aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="study-note-grid">
+            <div class="tree-box">
+              <div class="tree-heading">MY REPOSITORY / FOLDERS</div>
+              <pre>
+Webp/
+├── 0902/
+├── 0909/
+├── 0916/
+├── 0923/
+├── 0930/
+├── 1007/
+├── 1014/
+├── 1028/
+├── 1104/
+└── 1111/</pre
+              >
+              <p class="small-note">
+                확인된 날짜별 폴더를 옮긴 목록입니다.<br />저장소 전체 파일
+                구조를 표시한 것은 아닙니다.
+              </p>
+            </div>
+            <div class="note-card">
+              <div class="skill-title">WHY I KEEP NOTES</div>
+              <h3>나중에 다시 꺼내 볼 수 있도록.</h3>
+              <p>
+                수업 때 작성한 코드도 시간이 지나면 헷갈릴 수 있습니다. 날짜별로
+                정리해두면 필요한 실습을 찾고, 그때 작성한 내용을 다시 살펴보기
+                좋습니다.
+              </p>
+              <div class="note-line">
+                수업에서 배우기<br />→ 직접 코드로 작성하기<br />→ 날짜별로
+                정리하기<br />→ GitHub에 커밋하기
+              </div>
+              <p class="small-note">
+                아직 배우는 단계이지만, 작은 기록부터 차근차근 남기겠습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="contact-section"
+        id="contact"
+        aria-labelledby="contact-title"
+      >
+        <div class="wrap">
+          <div class="contact-panel">
+            <div class="eyebrow">05 / My GitHub</div>
+            <h2 id="contact-title">
+              앞으로 배울 내용도,<br />하나씩 쌓아가겠습니다.
+            </h2>
+            <p>
+              경성대학교 소프트웨어학과 2학년 나현지의 수업 기록.<br />자세한
+              실습 코드는 GitHub의 Webp 저장소에서 확인할 수 있습니다.
+            </p>
+            <div class="contact-bottom">
+              <a
+                class="btn"
+                href="https://github.com/dino060311/Webp"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Webp 저장소 보기
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 17 17 7M7 7h10v10" /></svg
+              ></a>
+              <div class="contact-id">
+                <span>CLASS NOTES ON GITHUB</span>dino060311 / Webp
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>NA HYEONJI · 경성대학교 소프트웨어학과 2학년</span>
+        <div class="footer-right">
+          <span>Learn. Practice. Commit.</span><a href="#home">BACK TO TOP ↑</a>
+        </div>
+      </div>
+    </footer>
+    <!-- 날짜별 설명은 .record-title과 .record-summary를 수정하면 됩니다.
+     확인하지 않은 세부 수업 주제는 기본값에 넣지 않았습니다. -->
+    <script>
+      (function () {
+        "use strict";
+        const root = document.documentElement,
+          themeButton = document.getElementById("theme-toggle");
+        function applyTheme(theme) {
+          root.dataset.theme = theme;
+          themeButton.setAttribute(
+            "aria-label",
+            theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"
+          );
+          document.querySelector('meta[name="theme-color"]').content =
+            theme === "dark" ? "#131d18" : "#f7f8f2";
+        }
+        let saved;
+        try {
+          saved = localStorage.getItem("hyeonji-class-theme");
+        } catch (e) {}
+        applyTheme(
+          saved === "dark" || saved === "light"
+            ? saved
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light"
+        );
+        themeButton.addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          applyTheme(next);
+          try {
+            localStorage.setItem("hyeonji-class-theme", next);
+          } catch (e) {}
+        });
+        const menuButton = document.getElementById("menu-toggle"),
+          nav = document.getElementById("navigation");
+        function closeMenu() {
+          nav.classList.remove("open");
+          menuButton.setAttribute("aria-expanded", "false");
+          menuButton.setAttribute("aria-label", "메뉴 열기");
+        }
+        menuButton.addEventListener("click", () => {
+          const open = nav.classList.toggle("open");
+          menuButton.setAttribute("aria-expanded", String(open));
+          menuButton.setAttribute(
+            "aria-label",
+            open ? "메뉴 닫기" : "메뉴 열기"
+          );
+        });
+        nav
+          .querySelectorAll("a")
+          .forEach((a) => a.addEventListener("click", closeMenu));
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && nav.classList.contains("open")) {
+            closeMenu();
+            menuButton.focus();
+          }
+        });
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest("header")) closeMenu();
+        });
+        window
+          .matchMedia("(min-width:761px)")
+          .addEventListener("change", (e) => {
+            if (e.matches) closeMenu();
+          });
+        const filters = [...document.querySelectorAll(".filter")],
+          cards = [...document.querySelectorAll(".record-card")],
+          sort = document.getElementById("sort"),
+          grid = document.getElementById("record-grid");
+        let selected = "all";
+        document.getElementById("record-tools").hidden = false;
+        function updateRecords() {
+          let count = 0;
+          cards
+            .slice()
+            .sort((a, b) =>
+              sort.value === "desc"
+                ? b.dataset.date.localeCompare(a.dataset.date)
+                : a.dataset.date.localeCompare(b.dataset.date)
+            )
+            .forEach((card) => {
+              card.hidden =
+                selected !== "all" && card.dataset.month !== selected;
+              grid.appendChild(card);
+              if (!card.hidden) count++;
+            });
+          filters.forEach((b) => {
+            const active = b.dataset.filter === selected;
+            b.classList.toggle("active", active);
+            b.setAttribute("aria-pressed", String(active));
+          });
+          document.getElementById("record-count").textContent =
+            String(count).padStart(2, "0") + " RECORDS";
+        }
+        filters.forEach((b) =>
+          b.addEventListener("click", () => {
+            selected = b.dataset.filter;
+            updateRecords();
+          })
+        );
+        sort.addEventListener("change", updateRecords);
+        const sections = [...document.querySelectorAll("main section[id]")],
+          links = [...nav.querySelectorAll("a")],
+          progress = document.querySelector(".progress");
+        let queued = false;
+        function updateScroll() {
+          const y = window.scrollY,
+            max = document.documentElement.scrollHeight - window.innerHeight;
+          progress.style.width =
+            (max > 0 ? Math.min(100, (y / max) * 100) : 0) + "%";
+          let current = sections[0].id;
+          const checkpoint = y + Math.min(220, window.innerHeight * 0.3);
+          sections.forEach((s) => {
+            if (s.offsetTop <= checkpoint) current = s.id;
+          });
+          if (
+            y + window.innerHeight >=
+            document.documentElement.scrollHeight - 4
+          )
+            current = "contact";
+          links.forEach((a) => {
+            const active = a.getAttribute("href") === "#" + current;
+            a.classList.toggle("active", active);
+            if (active) a.setAttribute("aria-current", "location");
+            else a.removeAttribute("aria-current");
+          });
+          queued = false;
+        }
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!queued) {
+              queued = true;
+              requestAnimationFrame(updateScroll);
+            }
+          },
+          { passive: true }
+        );
+        window.addEventListener("resize", updateScroll);
+        updateRecords();
+        updateScroll();
+      })();
+    </script>
+  </body>
+</html>
