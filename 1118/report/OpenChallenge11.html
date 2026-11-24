@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>캔버스에 파이 차트 그리기</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 24px 12px;
+        color: #222;
+        background: #fff;
+        font-family: Arial, "Malgun Gothic", sans-serif;
+      }
+
+      .container {
+        width: min(560px, 100%);
+        margin: 0 auto;
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+
+      .input-area {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px 10px;
+        margin-bottom: 12px;
+      }
+
+      .field {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+
+      .field label {
+        width: 12px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .field input {
+        width: 100%;
+        min-width: 0;
+        height: 29px;
+        padding: 4px 7px;
+        border: 1px solid #bfc8d2;
+        border-radius: 3px;
+        background: #fff;
+        font-size: 14px;
+      }
+
+      .unit {
+        font-size: 12px;
+      }
+
+      button {
+        height: 32px;
+        border: 1px solid #9aa8b7;
+        border-radius: 3px;
+        background: #f1f3f5;
+        color: #222;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #e6ebf0;
+      }
+
+      #chartCanvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid #d5e0e8;
+        background: #eaf3f8;
+      }
+
+      #message {
+        min-height: 18px;
+        margin: 6px 0 0;
+        color: #b42318;
+        font-size: 12px;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 16px 10px;
+        }
+
+        .input-area {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h2>학점 별도 학생 수를 입력하면 파이 차트로 비율 그리기</h2>
+
+      <div class="input-area">
+        <div class="field">
+          <label for="countA">A</label>
+          <input id="countA" type="number" min="0" step="1" value="0" />
+          <span class="unit">명</span>
+        </div>
+
+        <div class="field">
+          <label for="countB">B</label>
+          <input id="countB" type="number" min="0" step="1" value="0" />
+          <span class="unit">명</span>
+        </div>
+
+        <div class="field">
+          <label for="countC">C</label>
+          <input id="countC" type="number" min="0" step="1" value="0" />
+          <span class="unit">명</span>
+        </div>
+
+        <div class="field">
+          <label for="countD">D</label>
+          <input id="countD" type="number" min="0" step="1" value="0" />
+          <span class="unit">명</span>
+        </div>
+
+        <div class="field">
+          <label for="countF">F</label>
+          <input id="countF" type="number" min="0" step="1" value="0" />
+          <span class="unit">명</span>
+        </div>
+
+        <button id="drawButton" type="button">차트그리기</button>
+      </div>
+
+      <canvas id="chartCanvas" width="540" height="355">
+        현재 브라우저는 canvas를 지원하지 않습니다.
+      </canvas>
+      <p id="message" role="alert"></p>
+    </main>
+
+    <script>
+      const colors = ["blue", "green", "yellow", "magenta", "red"];
+      const grades = ["A", "B", "C", "D", "F"];
+
+      const canvas = document.getElementById("chartCanvas");
+      const context = canvas.getContext("2d");
+      const message = document.getElementById("message");
+
+      function drawPieChart() {
+        // 이전 차트 지우기
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        message.textContent = "";
+
+        // 입력된 학생 수 읽기
+        const counts = grades.map(function (grade) {
+          const input = document.getElementById("count" + grade);
+          return Number(input.value);
+        });
+
+        // 입력값 검사
+        if (
+          counts.some(function (count) {
+            return (
+              !Number.isFinite(count) || count < 0 || !Number.isInteger(count)
+            );
+          })
+        ) {
+          message.textContent = "학생 수는 0 이상의 정수로 입력해 주세요.";
+          return;
+        }
+
+        // 전체 학생 수 계산
+        const total = counts.reduce(function (sum, count) {
+          return sum + count;
+        }, 0);
+
+        if (total === 0) {
+          message.textContent = "학생 수를 한 명 이상 입력해 주세요.";
+          return;
+        }
+
+        // 범례 그리기
+        context.font = "12px Arial, sans-serif";
+        context.fillStyle = "#263858";
+
+        counts.forEach(function (count, index) {
+          const percent = Math.floor((count / total) * 100);
+
+          const legendText =
+            grades[index] + " 학점" + percent + "% : " + colors[index];
+
+          context.fillText(legendText, 8, 18 + index * 15);
+        });
+
+        // 파이 차트 위치와 크기
+        const centerX = 280;
+        const centerY = 175;
+        const radius = 160;
+
+        // 3시 방향부터 그리기
+        let startAngle = 0;
+
+        counts.forEach(function (count, index) {
+          const sliceAngle = (count / total) * Math.PI * 2;
+
+          const endAngle = startAngle + sliceAngle;
+
+          if (count > 0) {
+            context.beginPath();
+
+            context.moveTo(centerX, centerY);
+
+            context.arc(centerX, centerY, radius, startAngle, endAngle);
+
+            context.closePath();
+
+            context.fillStyle = colors[index];
+            context.fill();
+          }
+
+          startAngle = endAngle;
+        });
+      }
+
+      // 버튼 클릭 이벤트
+      document
+        .getElementById("drawButton")
+        .addEventListener("click", drawPieChart);
+    </script>
+  </body>
+</html>
