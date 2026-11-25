@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <base target="_top" />
+    <meta charset="UTF-8" />
+
+    <style>
+      :root {
+        --bg: #f6f5ef;
+        --surface: #fffefa;
+        --ink: #242d28;
+        --muted: #626e65;
+        --green: #275c43;
+        --soft: #e6ecdf;
+        --line: #d9ded2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          "Noto Sans KR",
+          sans-serif;
+        line-height: 1.75;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      a:focus-visible,
+      input:focus-visible {
+        outline: 3px solid var(--green);
+        outline-offset: 5px;
+      }
+
+      .wrap {
+        width: min(1080px, calc(100% - 40px));
+        margin-inline: auto;
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+        min-height: 80px;
+        padding-block: 18px;
+      }
+
+      .logo {
+        font-size: 21px;
+        font-weight: 850;
+        letter-spacing: -1px;
+        text-decoration: none;
+      }
+
+      .logo span {
+        color: var(--green);
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+      }
+
+      nav a {
+        color: var(--muted);
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      nav a:hover {
+        color: var(--green);
+      }
+
+      section {
+        padding-block: 76px;
+        scroll-margin-top: 24px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        align-items: center;
+        gap: 64px;
+        padding-block: 95px;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 2px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(36px, 5vw, 60px);
+        line-height: 1.3;
+        letter-spacing: -2.5px;
+      }
+
+      h1 em {
+        color: var(--green);
+        font-style: normal;
+      }
+
+      .lead {
+        max-width: 500px;
+        margin: 25px 0 30px;
+        color: var(--muted);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 10px 22px;
+        border: 1px solid var(--green);
+        background: var(--green);
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+
+      .btn:hover {
+        opacity: 0.85;
+      }
+
+      .btn.secondary {
+        background: transparent;
+        color: var(--green);
+      }
+
+      /* 프로필 카드 */
+      .note {
+        padding: 30px;
+        border: 1px solid var(--line);
+        background: var(--soft);
+        transform: rotate(2deg);
+      }
+
+      .note-label {
+        color: var(--green);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+      }
+
+      .profile-photo,
+      .profile-fallback {
+        width: 160px;
+        height: 160px;
+        margin: 24px auto 18px;
+        border: 5px solid var(--surface);
+        border-radius: 50%;
+        background: var(--surface);
+      }
+
+      .profile-photo {
+        display: block;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .profile-fallback {
+        display: grid;
+        place-items: center;
+        color: var(--green);
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: -2px;
+      }
+
+      .profile-name {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 800;
+        text-align: center;
+        letter-spacing: -1px;
+      }
+
+      .profile-caption {
+        margin: 4px 0 26px;
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+      }
+
+      .note-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding-block: 12px;
+        border-top: 1px solid #c6cfbd;
+        font-size: 13px;
+      }
+
+      .note-row span {
+        color: var(--muted);
+      }
+
+      .divider {
+        border-top: 1px solid var(--line);
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        font-size: clamp(28px, 4vw, 38px);
+        line-height: 1.35;
+        letter-spacing: -1.5px;
+      }
+
+      .section-desc {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      /* 자기소개 */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 50px;
+        margin-top: 30px;
+      }
+
+      .about-copy p {
+        margin-top: 0;
+      }
+
+      .about-highlight {
+        margin-top: 25px;
+        padding: 16px 20px;
+        border-left: 3px solid var(--green);
+        background: var(--soft);
+        color: var(--green);
+        font-weight: 650;
+      }
+
+      .values {
+        display: grid;
+        gap: 12px;
+      }
+
+      .value {
+        padding: 18px 22px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .value strong {
+        color: var(--green);
+      }
+
+      .value p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* 학습 기록 */
+      .work-top {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 25px;
+        margin-bottom: 28px;
+      }
+
+      .search-box {
+        display: grid;
+        gap: 6px;
+        width: min(100%, 300px);
+      }
+
+      .search-box label {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 0;
+        background: var(--surface);
+        color: var(--ink);
+      }
+
+      .result-count {
+        margin: 0 0 14px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        min-height: 255px;
+        padding: 25px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        border-color: var(--green);
+      }
+
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .number {
+        color: var(--green);
+        font-family: monospace;
+        font-size: 13px;
+      }
+
+      .tag {
+        padding: 3px 9px;
+        background: var(--soft);
+        color: var(--green);
+        font-size: 11px;
+      }
+
+      .card h3 {
+        margin: 20px 0 8px;
+        font-size: 21px;
+        letter-spacing: -0.7px;
+      }
+
+      .card p {
+        margin: 0 0 24px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .card a {
+        margin-top: auto;
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 750;
+        text-underline-offset: 4px;
+      }
+
+      #empty {
+        padding: 40px;
+        border: 1px dashed var(--line);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      /* GitHub 안내 */
+      .contact {
+        margin-bottom: 70px;
+        padding: 45px;
+        background: var(--green);
+        color: white;
+      }
+
+      .contact .eyebrow {
+        color: #d0dfc2;
+      }
+
+      .contact p {
+        max-width: 600px;
+        color: #e0e8df;
+      }
+
+      .contact .btn {
+        border-color: white;
+        background: white;
+        color: var(--green);
+      }
+
+      footer {
+        padding-block: 26px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      /* 태블릿 */
+      @media (max-width: 800px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding-block: 65px;
+        }
+
+        .note {
+          width: 100%;
+          max-width: 500px;
+          transform: none;
+        }
+
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        section {
+          padding-block: 55px;
+        }
+      }
+
+      /* 모바일 */
+      @media (max-width: 520px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+
+        nav {
+          gap: 16px;
+        }
+
+        h1 {
+          letter-spacing: -1.7px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .contact {
+          padding: 30px 22px;
+        }
+
+        .note {
+          padding: 25px;
+        }
+
+        .search-box {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .card,
+        .btn {
+          transition: none;
+        }
+
+        .card:hover {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrap nav">
+        <a class="logo" href="#home"> HYEONJI<span>.</span> </a>
+
+        <nav aria-label="주요 메뉴">
+          <a href="#about">소개</a>
+          <a href="#work">학습 기록</a>
+          <a href="#contact">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <!-- 첫 화면 -->
+      <section id="home" class="hero" aria-labelledby="hero-title">
+        <div>
+          <p class="eyebrow">LEARN · BUILD · GROW</p>
+
+          <h1 id="hero-title">
+            작은 배움을 쌓아<br />
+            <em>꾸준히 성장하는</em><br />
+            나현지입니다.
+          </h1>
+
+          <p class="lead">
+            프로그래밍 기초와 웹 개발을 공부하며,<br />
+            배운 내용을 직접 구현하고 기록합니다.
+          </p>
+
+          <div class="actions">
+            <a class="btn" href="#work"> 학습 기록 살펴보기 ↗ </a>
+
+            <a
+              class="btn secondary"
+              href="https://github.com/dino060311"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub 방문
+            </a>
+          </div>
+        </div>
+
+        <!-- 프로필 카드 -->
+        <aside class="note" aria-label="프로필 소개 카드">
+          <div class="note-label">MY PROFILE</div>
+
+          <!--
+          Webp 저장소의 main 브랜치 최상위에
+          profile.jpg 파일을 올려주세요.
+
+          PNG 파일을 사용하면 아래 주소의
+          profile.jpg를 profile.png로 수정하세요.
+        -->
+          <img
+            class="profile-photo"
+            src="https://raw.githubusercontent.com/dino060311/Webp/main/profile.jpg"
+            alt="나현지 프로필 사진"
+            width="160"
+            height="160"
+            decoding="async"
+            onerror="
+              this.hidden = true;
+              document.getElementById('profile-fallback').hidden = false;
+            "
+          />
+
+          <div
+            id="profile-fallback"
+            class="profile-fallback"
+            aria-label="프로필 사진 대신 표시되는 이름"
+            hidden
+          >
+            현지
+          </div>
+
+          <p class="profile-name">나현지</p>
+
+          <p class="profile-caption">작은 배움을 쌓아가는 예비 개발자</p>
+
+          <div class="note-row">
+            <span>관심 분야</span>
+            <strong>웹 개발</strong>
+          </div>
+
+          <div class="note-row">
+            <span>학습 저장소</span>
+            <strong>Webp</strong>
+          </div>
+
+          <div class="note-row">
+            <span>나의 키워드</span>
+            <strong>배움 · 구현 · 꾸준함</strong>
+          </div>
+        </aside>
+      </section>
+
+      <!-- 자기소개 -->
+      <section id="about" class="divider" aria-labelledby="about-title">
+        <p class="eyebrow">01 / ABOUT ME</p>
+
+        <h2 id="about-title" class="section-title">
+          꾸준함을 바탕으로, 한 걸음씩.
+        </h2>
+
+        <div class="about-grid">
+          <div class="about-copy">
+            <p>
+              안녕하세요. 프로그래밍 기초와 웹 개발을 공부하는 나현지입니다.
+            </p>
+
+            <p>
+              배운 내용을 작은 프로젝트로 구현하며 경험을 쌓고 있습니다.
+              꾸준함을 가장 큰 무기로 삼아, 한 걸음씩 성장하는 개발자가 되고자
+              합니다.
+            </p>
+
+            <div class="about-highlight">작은 배움이 모여, 더 나은 내일로.</div>
+          </div>
+
+          <div class="values">
+            <div class="value">
+              <strong>배움</strong>
+              <p>프로그래밍의 기초부터 차근차근 공부합니다.</p>
+            </div>
+
+            <div class="value">
+              <strong>구현</strong>
+              <p>배운 내용을 작은 결과물로 만들어봅니다.</p>
+            </div>
+
+            <div class="value">
+              <strong>꾸준함</strong>
+              <p>작은 배움과 경험을 이어가며 성장합니다.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 학습 기록 -->
+      <section id="work" class="divider" aria-labelledby="work-title">
+        <div class="work-top">
+          <div>
+            <p class="eyebrow">02 / LEARNING ARCHIVE</p>
+
+            <h2 id="work-title" class="section-title">배움의 기록</h2>
+
+            <p class="section-desc">
+              Webp 저장소의 폴더별 소스 코드를 살펴볼 수 있습니다.
+            </p>
+          </div>
+
+          <div class="search-box">
+            <label for="search">학습 기록 검색</label>
+
+            <input
+              id="search"
+              type="search"
+              placeholder="폴더명 또는 내용 입력"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <p id="count" class="result-count" role="status" aria-live="polite"></p>
+
+        <div id="cards" class="grid"></div>
+
+        <p id="empty" hidden>
+          검색 결과가 없습니다. 다른 검색어를 입력해주세요.
+        </p>
+
+        <noscript>
+          <p>
+            학습 기록 목록을 보려면 JavaScript를 활성화해주세요.
+            <a
+              href="https://github.com/dino060311/Webp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub에서 직접 보기
+            </a>
+          </p>
+        </noscript>
+      </section>
+
+      <!-- GitHub 안내 -->
+      <section id="contact" class="contact" aria-labelledby="contact-title">
+        <p class="eyebrow">03 / KEEP IN TOUCH</p>
+
+        <h2 id="contact-title" class="section-title">다음 배움도, 이곳에.</h2>
+
+        <p>
+          학습 과정과 코드는 GitHub에 기록하고 있습니다. 저장소에서 더 자세한
+          내용을 확인해주세요.
+        </p>
+
+        <a
+          class="btn"
+          href="https://github.com/dino060311/Webp"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Webp 저장소 방문 ↗
+        </a>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>나현지 · Portfolio</span>
+        <span>작은 배움이 모여, 더 나은 내일로.</span>
+      </div>
+    </footer>
+
+    <script>
+      /*
+      학습 기록 설정
+
+      실제 내용을 확인하지 못한 폴더에는 일반 안내를 넣었습니다.
+      각 폴더의 작업 내용에 맞게 title, description, tag를
+      수정해서 사용하세요.
+
+      아래 배열을 수정하면 카드와 검색 결과 개수가
+      자동으로 반영됩니다.
+    */
+      const records = [
+        {
+          folder: "0902",
+          title: "HTML 첫걸음",
+          description: "기본 HTML 문서 구조와 h1 제목 태그 작성 기록.",
+          tag: "HTML",
+        },
+        {
+          folder: "0909",
+          title: "0909 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "0916",
+          title: "나를 소개하는 페이지",
+          description: "웹 개발에 대한 관심과 성장 목표를 담은 자기소개.",
+          tag: "HTML",
+        },
+        {
+          folder: "0923",
+          title: "0923 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "0930",
+          title: "0930 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "1007",
+          title: "1007 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "1014",
+          title: "1014 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "1028",
+          title: "1028 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "1104",
+          title: "1104 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "1111",
+          title: "1111 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+        {
+          folder: "1118",
+          title: "1118 학습 기록",
+          description: "해당 폴더에 정리한 코드를 GitHub에서 확인합니다.",
+          tag: "ARCHIVE",
+        },
+      ];
+
+      const repositoryUrl = "https://github.com/dino060311/Webp";
+
+      const container = document.getElementById("cards");
+      const search = document.getElementById("search");
+      const count = document.getElementById("count");
+      const empty = document.getElementById("empty");
+
+      // 학습 기록 카드 만들기
+      const cardElements = records.map((record, index) => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const top = document.createElement("div");
+        top.className = "card-top";
+
+        const number = document.createElement("span");
+        number.className = "number";
+        number.textContent =
+          String(index + 1).padStart(2, "0") + " / " + record.folder;
+
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = record.tag;
+
+        top.append(number, tag);
+
+        const title = document.createElement("h3");
+        title.textContent = record.title;
+
+        const description = document.createElement("p");
+        description.textContent = record.description;
+
+        const link = document.createElement("a");
+        link.href =
+          repositoryUrl + "/tree/main/" + encodeURIComponent(record.folder);
+
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "GitHub 코드 보기 ↗";
+
+        link.setAttribute(
+          "aria-label",
+          record.title + " GitHub 코드 보기 (새 창)",
+        );
+
+        card.append(top, title, description, link);
+        container.append(card);
+
+        return {
+          element: card,
+          text: [record.folder, record.title, record.description, record.tag]
+            .join(" ")
+            .toLocaleLowerCase("ko-KR"),
+        };
+      });
+
+      // 검색 결과 반영하기
+      function filterCards() {
+        const query = search.value.trim().toLocaleLowerCase("ko-KR");
+
+        let visible = 0;
+
+        cardElements.forEach((card) => {
+          const matches = card.text.includes(query);
+
+          card.element.hidden = !matches;
+
+          if (matches) {
+            visible++;
+          }
+        });
+
+        count.textContent =
+          "전체 " + records.length + "개 중 " + visible + "개 표시";
+
+        empty.hidden = visible !== 0;
+      }
+
+      search.addEventListener("input", filterCards);
+      filterCards();
+
+      /*
+      페이지 내부 메뉴 이동.
+      base target="_top"의 영향을 받지 않도록
+      내부 링크는 현재 화면 안에서 스크롤합니다.
+    */
+      document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const targetId = link.getAttribute("href").slice(1);
+          const target = document.getElementById(targetId);
+
+          if (!target) {
+            return;
+          }
+
+          event.preventDefault();
+
+          const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+          ).matches;
+
+          target.scrollIntoView({
+            behavior: reduceMotion ? "instant" : "smooth",
+            block: "start",
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
